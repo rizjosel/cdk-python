@@ -58,7 +58,7 @@ class MyEc2CdkPyStack(Stack):
             key_name = "cli-user" if i["public"] else None
 
             # Create EC2 instance
-            ec2.Instance(
+            instance = ec2.Instance(
                 self,
                 f'{i["name"]}-instance',
                 vpc=vpc,
