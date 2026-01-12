@@ -15,6 +15,68 @@ class MyEc2CdkPyStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
         super().__init__(scope, construct_id, **kwargs)
 
+        CONFIG = {
+            "enable_s3": True,
+            "instances": [
+                {"name": "web1", "public": True},
+                {"name": "web2", "public": True},
+                {"name": "worker", "public": False}
+            ]
+        }
+        if CONFIG["enable_s3"]:
+            s3.Bucket(
+                self,
+                "MyBucket",
+                bucket_name="bucket100524-using-python-cdk",
+                versioned=True,
+                removal_policy=RemovalPolicy.DESTROY
+            )
+        vpc = ec2.Vpc(
+            self,
+            "FreeTierVpc",
+            max_azs=2,
+            nat_gateways=0
+        )
+
+        sg = ec2.SecurityGroup(
+            self,
+            "FreeTierSG",
+            vpc=vpc,
+            description="Allow SSH access",
+            allow_all_outbound=True
+        )
+
+        sg.add_ingress_rule(
+            ec2.Peer.any_ipv4(),
+            ec2.Port.tcp(22),
+            "Allow SSH"
+        )
+        for i in CONFIG["instances"]:
+            # Conditional arguments
+            vpc_subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC) if i["public"] else None
+            security_group = sg if i["public"] else None
+            key_name = "cli-user" if i["public"] else None
+
+            # Create EC2 instance
+            ec2.Instance(
+                self,
+                f'{i["name"]}-instance',
+                vpc=vpc,
+                instance_type=ec2.InstanceType("t2.micro"),
+                machine_image=ec2.AmazonLinuxImage(
+                    generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
+                ),
+                vpc_subnets=vpc_subnets,
+                security_group=security_group,
+                key_name=key_name
+            )
+            if i["public"]:
+                CfnOutput(self, f'{i["name"]}_PublicIp', value=instance.instance_public_ip)
+
+
+
+
+"""""
         name = ["bucket1","bucket2","bucket3"]
 
         for i in name:
@@ -66,4 +128,4 @@ class MyEc2CdkPyStack(Stack):
         # 🔹 Outputs
         CfnOutput(self, "InstanceId", value=instance.instance_id)
         CfnOutput(self, "PublicIp", value=instance.instance_public_ip)
-
+"""""
