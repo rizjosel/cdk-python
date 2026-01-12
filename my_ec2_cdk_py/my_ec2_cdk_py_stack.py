@@ -17,6 +17,7 @@ class MyEc2CdkPyStack(Stack):
 
         bucket = s3.Bucket(
             self,
+            "MyBucket",
             bucket_name="myfirstbucketusingpythoncdk"
         )
 
