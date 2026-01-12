@@ -1,0 +1,920 @@
+{
+ "Resources": {
+  "FreeTierVpcE96FC6A2": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/Resource"
+   }
+  },
+  "FreeTierVpcPublicSubnet1SubnetDB727DE8": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet1/Subnet"
+   }
+  },
+  "FreeTierVpcPublicSubnet1RouteTableDA63C494": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "FreeTierVpcPublicSubnet1RouteTableAssociation14E39D13": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "FreeTierVpcPublicSubnet1RouteTableDA63C494"
+    },
+    "SubnetId": {
+     "Ref": "FreeTierVpcPublicSubnet1SubnetDB727DE8"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "FreeTierVpcPublicSubnet1DefaultRouteA5182CCE": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "FreeTierVpcIGWBAB0BAFE"
+    },
+    "RouteTableId": {
+     "Ref": "FreeTierVpcPublicSubnet1RouteTableDA63C494"
+    }
+   },
+   "DependsOn": [
+    "FreeTierVpcVPCGW57910A89"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "FreeTierVpcPublicSubnet2Subnet5934860A": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet2/Subnet"
+   }
+  },
+  "FreeTierVpcPublicSubnet2RouteTable5C0D58E8": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "FreeTierVpcPublicSubnet2RouteTableAssociationC077EF4C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "FreeTierVpcPublicSubnet2RouteTable5C0D58E8"
+    },
+    "SubnetId": {
+     "Ref": "FreeTierVpcPublicSubnet2Subnet5934860A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "FreeTierVpcPublicSubnet2DefaultRoute44CF6C94": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "FreeTierVpcIGWBAB0BAFE"
+    },
+    "RouteTableId": {
+     "Ref": "FreeTierVpcPublicSubnet2RouteTable5C0D58E8"
+    }
+   },
+   "DependsOn": [
+    "FreeTierVpcVPCGW57910A89"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "FreeTierVpcIsolatedSubnet1Subnet0AE8DF18": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet1/Subnet"
+   }
+  },
+  "FreeTierVpcIsolatedSubnet1RouteTable49705241": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet1/RouteTable"
+   }
+  },
+  "FreeTierVpcIsolatedSubnet1RouteTableAssociation68ADBE12": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "FreeTierVpcIsolatedSubnet1RouteTable49705241"
+    },
+    "SubnetId": {
+     "Ref": "FreeTierVpcIsolatedSubnet1Subnet0AE8DF18"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet1/RouteTableAssociation"
+   }
+  },
+  "FreeTierVpcIsolatedSubnet2SubnetDF107921": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet2/Subnet"
+   }
+  },
+  "FreeTierVpcIsolatedSubnet2RouteTable0A36FBB5": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet2/RouteTable"
+   }
+  },
+  "FreeTierVpcIsolatedSubnet2RouteTableAssociation7795AF95": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "FreeTierVpcIsolatedSubnet2RouteTable0A36FBB5"
+    },
+    "SubnetId": {
+     "Ref": "FreeTierVpcIsolatedSubnet2SubnetDF107921"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/IsolatedSubnet2/RouteTableAssociation"
+   }
+  },
+  "FreeTierVpcIGWBAB0BAFE": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/IGW"
+   }
+  },
+  "FreeTierVpcVPCGW57910A89": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "FreeTierVpcIGWBAB0BAFE"
+    },
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/VPCGW"
+   }
+  },
+  "FreeTierVpcRestrictDefaultSecurityGroupCustomResource6B6B9CDC": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "FreeTierVpcE96FC6A2",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": {
+     "Ref": "AWS::AccountId"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierVpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":ec2:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":security-group/",
+             {
+              "Fn::GetAtt": [
+               "FreeTierVpcE96FC6A2",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "FreeTierSG3C174227": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Allow SSH access",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow SSH",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     }
+    ],
+    "VpcId": {
+     "Ref": "FreeTierVpcE96FC6A2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierSG/Resource"
+   }
+  },
+  "FreeTierInstanceInstanceRole9B235447": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierInstance"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierInstance/InstanceRole/Resource"
+   }
+  },
+  "FreeTierInstanceInstanceProfile8D4A0391": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "FreeTierInstanceInstanceRole9B235447"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierInstance/InstanceProfile"
+   }
+  },
+  "FreeTierInstance7F1A47A8": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "IamInstanceProfile": {
+     "Ref": "FreeTierInstanceInstanceProfile8D4A0391"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t2.micro",
+    "KeyName": "cli-user",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "FreeTierSG3C174227",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "FreeTierVpcPublicSubnet1SubnetDB727DE8"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MyEc2CdkPyStack/FreeTierInstance"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "FreeTierInstanceInstanceRole9B235447"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/FreeTierInstance/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+1VTY/aMBD9LZvjyqRaqFppb4HDKlJVIljtodWqcpwBpjh26g9oGuW/d4LNhnLeA4eeMn72jJ+fnyfTdDr7mD7c8aOdiGo/kVim3dpxsWcE/ehATNPupRHfu6Tmv7M/NnlM7hOWKO6euIMjbwPSv7LFRr0UC1b4UqJY+1KBoyx+4Ch5iRJd+00riPmHRuRVjAVWZi612MdxzZtQJG+W6gv3SuySR2c8sASbw6fF1XJuLW5VTjNZVRmwdqkWBrhDrQI1diMsbobIbbAIlglGGaKV9g6eeSlhxEcss1YLPBV4W8wKgwdy4bubbcOlvQF5/9N4Lxonq+XKgSGjxMYVG1YcZY6a3q4G5dgahDdE9slo35CriOl5Hyn1MZNy6V2pvarOL6ACKww2/x67qnK1HcisvKRDUyHBiYNEBQEJuUIrBWJIPfdWr/CXhyjOqW+c4PvkNT6ZS34sV9ZxJYDqYwyf2wbelBQ72jCv+fZC+Bjtof3K6zNuL8uOa8PjIm5dYk9hrB4uKOnP2oate4a8TruVlgMhuhdfQzVvh+zGoBLYcJkJQeK58e5ozZCQiVHAUHVAL6sXRm9QQt+zFVjtDZ16kIUtvHW6vsIoPQJX81TlgBWYOSc/UV8BRz+8LartkFNwQ5KQUYYB3XPjXc+K1u20+jBLH2bp57ufFnFi6ARYQ7oK37/6k+izSAcAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "MyEc2CdkPyStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Outputs": {
+  "InstanceId": {
+   "Value": {
+    "Ref": "FreeTierInstance7F1A47A8"
+   }
+  },
+  "PublicIp": {
+   "Value": {
+    "Fn::GetAtt": [
+     "FreeTierInstance7F1A47A8",
+     "PublicIp"
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
