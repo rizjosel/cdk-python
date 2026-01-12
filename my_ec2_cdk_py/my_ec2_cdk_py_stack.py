@@ -20,7 +20,7 @@ class MyEc2CdkPyStack(Stack):
         for i in name:
             s3.Bucket(
                 self,
-                "f{i}",
+                f"{i}",
                 bucket_name=f"{i}using-python-cdk"
             )
 
