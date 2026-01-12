@@ -3,12 +3,22 @@ from aws_cdk import (
     CfnOutput,
     aws_ec2 as ec2,
 )
+from aws_cdk import (
+    Stack,
+    aws_s3 as s3,
+    RemovalPolicy
+)
 from constructs import Construct
 
 
 class MyEc2CdkPyStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
         super().__init__(scope, construct_id, **kwargs)
+
+        bucket = s3.Bucket(
+            self,
+            bucket_name="myfirstbucketusingpythoncdk"
+        )
 
         # 🔹 VPC (Free Tier safe)
         vpc = ec2.Vpc(
