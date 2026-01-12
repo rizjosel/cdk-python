@@ -15,11 +15,14 @@ class MyEc2CdkPyStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
         super().__init__(scope, construct_id, **kwargs)
 
-        bucket = s3.Bucket(
-            self,
-            "MyBucket",
-            bucket_name="myfirstbucketusingpythoncdk"
-        )
+        name = ["bucket1","bucket2","bucket3"]
+
+        for i in name:
+            s3.Bucket(
+                self,
+                "MyBucket",
+                bucket_name=f"{i}usingpythoncdk"
+            )
 
         # 🔹 VPC (Free Tier safe)
         vpc = ec2.Vpc(
