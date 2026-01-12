@@ -21,7 +21,7 @@ class MyEc2CdkPyStack(Stack):
             s3.Bucket(
                 self,
                 f"{i}",
-                bucket_name=f"{i}using-python-cdk"
+                bucket_name=f"{i}-using-python-cdk"
             )
 
         # 🔹 VPC (Free Tier safe)
