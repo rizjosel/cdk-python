@@ -12,18 +12,10 @@ from constructs import Construct
 
 
 class MyEc2CdkPyStack(Stack):
-    def __init__(self, scope: Construct, construct_id: str, **kwargs):
+    def __init__(self, scope: Construct, construct_id: str, config: dict, **kwargs):
         super().__init__(scope, construct_id, **kwargs)
 
-        CONFIG = {
-            "enable_s3": True,
-            "instances": [
-                {"name": "web1", "public": True},
-                {"name": "web2", "public": True},
-                {"name": "worker", "public": False}
-            ]
-        }
-        if CONFIG["enable_s3"]:
+        if config.get("enable_s3"):
             s3.Bucket(
                 self,
                 "MyBucket",
@@ -51,7 +43,7 @@ class MyEc2CdkPyStack(Stack):
             ec2.Port.tcp(22),
             "Allow SSH"
         )
-        for i in CONFIG["instances"]:
+        for i in config.get("instances"):
             # Conditional arguments
             vpc_subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC) if i["public"] else None
             security_group = sg if i["public"] else None
