@@ -1,69 +1,27 @@
-from aws_cdk import (
-    Stack,
-    CfnOutput,
-    aws_ec2 as ec2,
-)
-from aws_cdk import (
-    Stack,
-    aws_s3 as s3,
-    RemovalPolicy
-)
+from aws_cdk import Stack
 from constructs import Construct
-
+from my_ec2_cdk_py.constructs.vpc_sg import VpcConstruct
+from my_ec2_cdk_py.constructs.s3_bucket import S3Construct
+from my_ec2_cdk_py.constructs.ec2_instances import Ec2InstanceConstruct
 
 class MyEc2CdkPyStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, config: dict, **kwargs):
         super().__init__(scope, construct_id, **kwargs)
 
         if config.get("enable_s3"):
-            s3.Bucket(
+            S3Construct(self, "S3")
+
+        vpc_construct = VpcConstruct(self, "Vpc")
+
+        for inst in config.get("instances", []):
+            Ec2InstanceConstruct(
                 self,
-                "MyBucket",
-                bucket_name="bucket100524-using-python-cdk",
-                versioned=True,
-                removal_policy=RemovalPolicy.DESTROY
+                f"{inst['name']}-Ec2",
+                vpc=vpc_construct.vpc,
+                security_group=vpc_construct.security_group,
+                instance_config=inst
             )
-        vpc = ec2.Vpc(
-            self,
-            "FreeTierVpc",
-            max_azs=2,
-            nat_gateways=0
-        )
 
-        sg = ec2.SecurityGroup(
-            self,
-            "FreeTierSG",
-            vpc=vpc,
-            description="Allow SSH access",
-            allow_all_outbound=True
-        )
-
-        sg.add_ingress_rule(
-            ec2.Peer.any_ipv4(),
-            ec2.Port.tcp(22),
-            "Allow SSH"
-        )
-        for i in config.get("instances"):
-            # Conditional arguments
-            vpc_subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC) if i["public"] else None
-            security_group = sg if i["public"] else None
-            key_name = "cli-user" if i["public"] else None
-
-            # Create EC2 instance
-            instance = ec2.Instance(
-                self,
-                f'{i["name"]}-instance',
-                vpc=vpc,
-                instance_type=ec2.InstanceType("t2.micro"),
-                machine_image=ec2.AmazonLinuxImage(
-                    generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
-                ),
-                vpc_subnets=vpc_subnets,
-                security_group=security_group,
-                key_name=key_name
-            )
-            if i["public"]:
-                CfnOutput(self, f'{i["name"]}_PublicIp', value=instance.instance_public_ip)
 
 
 
